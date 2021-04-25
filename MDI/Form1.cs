@@ -18,6 +18,7 @@ namespace MDIForm
 
         private void 열기OToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // 사용자가 선택한 이미지 열기
             OpenFileDialog op = new OpenFileDialog();
             if (op.ShowDialog() == DialogResult.OK)
             {
@@ -32,13 +33,14 @@ namespace MDIForm
 
         private void 저장SToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // 포커스를 가지고 있는 윈도우의 사진을 저장
             saveFileDialog1.FileName = "";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 Form2 Child = ActiveMdiChild as Form2; // 저장하려는 Form의 인스턴스 얻어옴
                 if (Child != null)
                 {
-                    switch(saveFileDialog1.FilterIndex) // 파일 형식
+                    switch (saveFileDialog1.FilterIndex) // 파일 형식 (saveFileDialog의 Filter에 넣어주기 / jpg 파일|*.jpg|bmp 파일|*.bmp|png 파일|*.png)
                     {
                         case 1:
                             Child.image.Save(saveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -81,7 +83,7 @@ namespace MDIForm
                         int g = color.G;
                         int b = color.B;
 
-                        // Saturation
+                        // Saturation (오버플로우, 언더플로우 방지)
                         if (((ToolStripMenuItem)sender).Text.Equals("밝게하기"))
                         {
                             // 밝게하기
