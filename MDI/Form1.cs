@@ -18,7 +18,6 @@ namespace MDIForm
 
         private void 열기OToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // 사용자가 선택한 이미지 열기
             OpenFileDialog op = new OpenFileDialog();
             if (op.ShowDialog() == DialogResult.OK)
             {
@@ -33,14 +32,13 @@ namespace MDIForm
 
         private void 저장SToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // 포커스를 가지고 있는 윈도우의 사진을 저장
             saveFileDialog1.FileName = "";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 Form2 Child = ActiveMdiChild as Form2; // 저장하려는 Form의 인스턴스 얻어옴
                 if (Child != null)
                 {
-                    switch (saveFileDialog1.FilterIndex) // 파일 형식 (saveFileDialog의 Filter에 넣어주기 / jpg 파일|*.jpg|bmp 파일|*.bmp|png 파일|*.png)
+                    switch(saveFileDialog1.FilterIndex) // 파일 형식
                     {
                         case 1:
                             Child.image.Save(saveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -83,7 +81,7 @@ namespace MDIForm
                         int g = color.G;
                         int b = color.B;
 
-                        // Saturation (오버플로우, 언더플로우 방지)
+                        // Saturation
                         if (((ToolStripMenuItem)sender).Text.Equals("밝게하기"))
                         {
                             // 밝게하기
@@ -369,5 +367,23 @@ namespace MDIForm
             }
         }
 
+        private void 대화상자ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form3 dig = new Form3();
+            Form2 original = ActiveMdiChild as Form2;
+            Image I = original.image;
+            dig.image = I;
+
+            if (original != null)
+            {
+                if (dig.ShowDialog() == DialogResult.OK)
+                {
+                    Form2 Child = new Form2();
+                    Child.image = dig.newImage; // 이미지 저장한 것을 그대로 사용
+                    Child.MdiParent = this;
+                    Child.Show(); // 밝기 조절한 이미지
+                }
+            }
+        }
     }
 }
